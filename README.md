@@ -3,6 +3,7 @@
 
 Hello! Foxware is an **ESP32 firmware** meant to provide access to educational offensive pentesting. 
 
+## About 📖
 > I wanted to create my own firmware that had a fun environment to it as
 > well as useful tools. I also wanted to develop my C++ and embedded
 > skills.
