@@ -1,32 +1,39 @@
-# Foxware
-Hello! This project is intended for the M5StickPlusC2. I wanted to create my own firmware that had a fun environment to it as well as useful tools.
 
-I also wanted to develop my C++ and embedded skills.
+# Foxware 🦊
+
+Hello! Foxware is an **ESP32 firmware** meant to provide access to educational offensive pentesting. 
+
+> I wanted to create my own firmware that had a fun environment to it as
+> well as useful tools. I also wanted to develop my C++ and embedded
+> skills.
+
+> I am using the PlatformIO extension through VSCode for developemnt, my
+> .ini file is included in the repo for build purposes.
+
+# Features 📜
+
+## IR 🚨
+  - [ ]  TV-B-Gone
+  - [ ] IR-Receiver
+  - [ ] Custom IR codes
 
 
-I am using the PlatformIO extension through VSCode for developemnt, my .ini file is included in the repo for build purposes.
-
-## IR
- - [ ]  TV-B-Gone
- - [ ] IR-Receiver
- - [ ] Custom IR codes
-
-## BLE
+## BLE 🔵🦷
  - [ ] BLE Scan
 
-## RF
+## RF📡
 
  - [ ] Scan/Copy Frequencies
  - [ ] Custom SubGhz
  - [ ] Replay Frequencies
 
-## RFID
+## RFID 💳
  - [ ] Read Tag
  - [ ] Clone Tag
  - [ ] Replay Tag Data
  - [ ] Store Tag Data
 
-## WIFI
+## WIFI 🛜
  - [ ] Connect to WiFi
  - [ ] Disconnect WiFi
  - [ ] WiFi Attacks
