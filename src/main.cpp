@@ -1,30 +1,35 @@
 #include "main.hpp"
 
-int menuIndex = 0;
+menuItems menuIndex;
+int menuDepth;
 
 void setup() {
   Serial.begin(9600);
   configureM5();
   bootScreen();
-  menuIndex = 0;
+  
+  menuIndex = IR;
+  menuDepth = 0;
 
   delay(2000);
   StickCP2.Display.clear();
-
+  drawMainMenuItems(menuIndex); // Draw first tile on startup
 }
 
 void loop() {
   StickCP2.update();
 
-  if (StickCP2.BtnA.isPressed()) { 
-    if (menuIndex >= MAX_MENU_ITEMS - 1) { menuIndex = 0; }  // Roll over menu 
-    else {  // Draw next tile
-      menuIndex++;
-    }
+  if (StickCP2.BtnA.wasClicked() && menuDepth == 0) { 
+    menuIndex++; // Overloaded operator rolls menu over
     clearDisplay();
+    drawMainMenuItems(menuIndex); // Draw new menu tile
   }
-  
-  drawTile(menuIndex); // Draw new menu tile
+    
+  if (StickCP2.BtnB.wasClicked()) {
+    menuDepth++;
+    clearDisplay();
+    drawSubMenuItems(menuIndex);
+  }
 
   delay(50);
 }
