@@ -15,7 +15,6 @@ Hello! Foxware is an **ESP32 firmware** meant to provide access to educational o
 
 ## IR 🚨
   - [ ]  TV-B-Gone
-  - [ ] IR-Receiver
   - [ ] Custom IR codes
 
 
