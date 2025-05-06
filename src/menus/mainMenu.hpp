@@ -3,6 +3,7 @@
 
   #include <Arduino.h>
   #include <M5StickCPlus2.h>
+  #include <iterator>
   #include "../config/utils.hpp"
 
   #define MAX_MENU_ITEMS 5
@@ -31,5 +32,6 @@
 
   void drawMainMenuItems(int menuIndex);
   void drawSubMenuItems(int selectorIndex);
-
+  void changeSelectedItemColor(int subFuncIndex, int menuIndex);
+  
   #endif
