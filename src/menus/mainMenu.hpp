@@ -6,13 +6,13 @@
   #include <iterator>
   #include "../config/utils.hpp"
 
-  #define MAX_MENU_ITEMS 5
+  #include "menus/IR/irMenu.hpp"
+  #include "menus/BLE/bleMenu.hpp"
+  #include "menus/RF/rfMenu.hpp"
+  #include "menus/WIFI/wifiMenu.hpp"
+  #include "menus/RFID/rfidMenu.hpp"
 
-  #define IR_MENU_SIZE 5
-  #define BLE_MENU_SIZE 5
-  #define RF_MENU_SIZE 5
-  #define RFID_MENU_SIZE 5
-  #define WIFI_MENU_SIZE 5
+  #define MAX_MENU_ITEMS 5
 
   enum menuItems {
     IR,
@@ -30,8 +30,8 @@
 	  return currentItem;
   }
 
+  void initMenus();
   void drawMainMenuItems(int menuIndex);
-  void drawSubMenuItems(int selectorIndex);
-  void changeSelectedItemColor(int subFuncIndex, int menuIndex);
+  void displaySubmenus(int index);
   
   #endif
