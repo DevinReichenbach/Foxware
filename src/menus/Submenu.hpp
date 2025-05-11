@@ -1,4 +1,4 @@
-// Menu.h
+// Abstract Class for Submenus
 #ifndef SUBMENU_H
 #define SUBMENU_H
 
