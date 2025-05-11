@@ -33,5 +33,6 @@
   void initMenus();
   void drawMainMenuItems(int menuIndex);
   void displaySubmenus(int index);
+  void colorSubmenus(int index);
   
   #endif

@@ -2,7 +2,6 @@
 
 menuItems menuIndex;
 int menuDepth;
-int submenuIndex;
 
 void setup() {
   Serial.begin(9600);
@@ -20,9 +19,13 @@ void loop() {
   StickCP2.update();
 
   // Next Button
-  if (StickCP2.BtnA.wasClicked() && menuDepth == 0) {
+  if (StickCP2.BtnA.wasClicked()) {
     menuIndex++;
-    drawMainMenuItems(menuIndex);
+    if (menuDepth == 0) {
+      drawMainMenuItems(menuIndex);
+    } else if (menuDepth == 1) {
+      colorSubmenus(menuIndex);
+    }
   }
   // Back Button
   if (StickCP2.BtnPWR.wasClicked() && menuDepth > 0) {

@@ -8,10 +8,10 @@
 
 class WIFIMenu : public Submenu {
   private:
-    const char* functions[WIFI_MENU_SIZE];
+    static const char* functionList[];
+
   public:
     WIFIMenu();
-    void displayMenu() override;
 };
 
 #endif
