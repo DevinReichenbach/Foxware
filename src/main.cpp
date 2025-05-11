@@ -2,6 +2,7 @@
 
 menuItems menuIndex;
 int menuDepth;
+int subMenuIndex;
 
 void setup() {
   Serial.begin(9600);
@@ -10,6 +11,7 @@ void setup() {
 
   menuIndex = IR;
   menuDepth = 0;
+  subMenuIndex = 0; // Track index to color selected function on screen
 
   delay(2000);
   initMenus();
@@ -20,11 +22,12 @@ void loop() {
 
   // Next Button
   if (StickCP2.BtnA.wasClicked()) {
-    menuIndex++;
     if (menuDepth == 0) {
+      menuIndex++;
       drawMainMenuItems(menuIndex);
     } else if (menuDepth == 1) {
-      colorSubmenus(menuIndex);
+      subMenuIndex++;
+      if (displaySubmenus(menuIndex, subMenuIndex) == subMenuIndex) { subMenuIndex = 0; displaySubmenus(menuIndex, subMenuIndex); } // Re-draw after reset
     }
   }
   // Back Button
@@ -35,7 +38,8 @@ void loop() {
   // Forward Button
   if (StickCP2.BtnB.wasClicked() && menuDepth == 0) {
     menuDepth++;
-    displaySubmenus(menuIndex);
+    subMenuIndex = 0; // Reset submenu index when entering new menu
+    displaySubmenus(menuIndex, subMenuIndex); // First function is selected
   }
   
   delay(50);

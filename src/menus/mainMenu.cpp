@@ -32,14 +32,11 @@ void drawMainMenuItems(int menuIndex) {
   drawCenteredPNG(menuIcon[menuIndex]);  // Draw PNG image
 }
 
-void displaySubmenus(int index) {
-  if (index == IR) { ir_menu->displayMenu(0); }
-  if (index == BLE) { ble_menu->displayMenu(0); }
-  if (index == RF) { rf_menu->displayMenu(0); }
-  if (index == RFID) { rfid_menu->displayMenu(0); }
-  if (index == WIFI) { wifi_menu->displayMenu(0); }
-}
-
-void colorSubmenus(int index) {
-
+// Draw functions of selected menu, return size of submenu
+int displaySubmenus(int mainMenuIndex, int coloredFunctionIndex) {
+  if (mainMenuIndex == IR) { ir_menu->displayMenu(coloredFunctionIndex); return ir_menu->getSubmenuSize(); }
+  if (mainMenuIndex == BLE) { ble_menu->displayMenu(coloredFunctionIndex); return ble_menu->getSubmenuSize(); }
+  if (mainMenuIndex == RF) { rf_menu->displayMenu(coloredFunctionIndex); return rf_menu->getSubmenuSize(); }
+  if (mainMenuIndex == RFID) { rfid_menu->displayMenu(coloredFunctionIndex); return rfid_menu->getSubmenuSize(); }
+  if (mainMenuIndex == WIFI) { wifi_menu->displayMenu(coloredFunctionIndex); return wifi_menu->getSubmenuSize(); }
 }

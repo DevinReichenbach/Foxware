@@ -10,7 +10,7 @@ public:
     virtual const char* const* getFunctions() const { return functions; }
     virtual int getSubmenuSize() const { return menuSize; }
 
-    virtual void displayMenu(int coloredFunction) {
+    virtual void displayMenu(int coloredFunctionIndex) {
         StickCP2.Display.clear();
         StickCP2.Display.setTextDatum(datum_t::top_left);
 
@@ -19,9 +19,13 @@ public:
         int submenuSize = getSubmenuSize();
 
         for (int menuItem = 0; menuItem < submenuSize; menuItem++) {
-            if (coloredFunction == menuItem) { StickCP2.Display.setTextColor(WHITE); }
+            if (coloredFunctionIndex == menuItem) { StickCP2.Display.setTextColor(WHITE); }
+            else { StickCP2.Display.setTextColor(ORANGE); }
+
             StickCP2.Display.drawString(functions[menuItem], 10, menuItem * 25); // Draw Sub Menus
         }
+
+        StickCP2.Display.setTextColor(ORANGE); // Guarantee Color changes
     }
 
     virtual ~Submenu() {} // virtual destructor
