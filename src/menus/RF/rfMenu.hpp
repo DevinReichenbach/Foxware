@@ -10,5 +10,7 @@ class RFMenu : public Submenu {
 
   public:
     RFMenu();
+  
+  void callSelectedFunction() override;
 };
 #endif

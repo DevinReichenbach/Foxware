@@ -12,3 +12,11 @@ RFIDMenu::RFIDMenu() {
   functions = functionList;
   menuSize = sizeof(functionList) / sizeof(functionList[0]);
 }
+
+void RFIDMenu::callSelectedFunction() {
+  if (selectedFunctionIndex == 0) {  }
+  else if (selectedFunctionIndex == 1) {}
+  else if (selectedFunctionIndex == 2) {}
+  else if (selectedFunctionIndex == 3) {}
+  else if (selectedFunctionIndex == 4) {}
+}

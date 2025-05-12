@@ -3,6 +3,7 @@
 
 #include <M5StickCPlus2.h>
 #include "menus/Submenu.hpp"
+#include "ir.hpp"
 
 class IRMenu : public Submenu {
   private:
@@ -10,6 +11,8 @@ class IRMenu : public Submenu {
 
   public:
     IRMenu();
+
+  void callSelectedFunction() override;
 };
 
 #endif

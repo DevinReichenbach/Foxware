@@ -6,6 +6,7 @@ class Submenu {
 protected:
     const char** functions = nullptr;
     int menuSize = 0;
+    int selectedFunctionIndex = 0;
 public:
     virtual const char* const* getFunctions() const { return functions; }
     virtual int getSubmenuSize() const { return menuSize; }
@@ -13,6 +14,7 @@ public:
     virtual void displayMenu(int coloredFunctionIndex) {
         StickCP2.Display.clear();
         StickCP2.Display.setTextDatum(datum_t::top_left);
+        selectedFunctionIndex = coloredFunctionIndex; // Store index of selected function
 
         // Get sizes
         const char* const* functions = getFunctions();
@@ -27,6 +29,8 @@ public:
 
         StickCP2.Display.setTextColor(ORANGE); // Guarantee Color changes
     }
+
+    virtual void callSelectedFunction() = 0;
 
     virtual ~Submenu() {} // virtual destructor
 };

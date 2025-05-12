@@ -10,6 +10,8 @@ class BLEMenu : public Submenu {
 
   public:
     BLEMenu();
+    
+  void callSelectedFunction() override;
 };
 
 #endif

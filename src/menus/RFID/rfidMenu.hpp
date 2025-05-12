@@ -10,6 +10,8 @@ class RFIDMenu : public Submenu {
 
   public:
     RFIDMenu();
+
+  void callSelectedFunction() override;
 };
 
 #endif

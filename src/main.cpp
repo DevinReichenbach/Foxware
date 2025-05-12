@@ -35,11 +35,16 @@ void loop() {
     menuDepth--;
     drawMainMenuItems(menuIndex);
   }
-  // Forward Button
-  if (StickCP2.BtnB.wasClicked() && menuDepth == 0) {
-    menuDepth++;
-    subMenuIndex = 0; // Reset submenu index when entering new menu
-    displaySubmenus(menuIndex, subMenuIndex); // First function is selected
+
+  // Select Button
+  if (StickCP2.BtnB.wasClicked()) {
+    if (menuDepth == 0) {
+      menuDepth++;
+      subMenuIndex = 0; // Reset submenu index when entering new menu
+      displaySubmenus(menuIndex, subMenuIndex); // First function is selected
+    } else if (menuDepth == 1) {
+      callSubMenuFunction(menuIndex);
+    }
   }
   
   delay(50);

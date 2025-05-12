@@ -39,4 +39,14 @@ int displaySubmenus(int mainMenuIndex, int coloredFunctionIndex) {
   if (mainMenuIndex == RF) { rf_menu->displayMenu(coloredFunctionIndex); return rf_menu->getSubmenuSize(); }
   if (mainMenuIndex == RFID) { rfid_menu->displayMenu(coloredFunctionIndex); return rfid_menu->getSubmenuSize(); }
   if (mainMenuIndex == WIFI) { wifi_menu->displayMenu(coloredFunctionIndex); return wifi_menu->getSubmenuSize(); }
+
+  return -1; // Error
+}
+
+void callSubMenuFunction(int mainMenuIndex) {
+  if (mainMenuIndex == IR) { ir_menu->callSelectedFunction(); }
+  if (mainMenuIndex == BLE) { ble_menu->callSelectedFunction(); }
+  if (mainMenuIndex == RF) { rf_menu->callSelectedFunction(); }
+  if (mainMenuIndex == RFID) { rfid_menu->callSelectedFunction(); }
+  if (mainMenuIndex == WIFI) { wifi_menu->callSelectedFunction(); }
 }

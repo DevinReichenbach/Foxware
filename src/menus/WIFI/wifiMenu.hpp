@@ -12,6 +12,8 @@ class WIFIMenu : public Submenu {
 
   public:
     WIFIMenu();
+
+  void callSelectedFunction() override;
 };
 
 #endif
