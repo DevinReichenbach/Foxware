@@ -1,7 +1,7 @@
 #include "irMenu.hpp"
 
 const char* IRMenu::functionList[] = {
-  "Send Custom Code",
+  "TV Killer",
   "IR Function 2",
   "IR Function 3",
   "IR Function 4",
@@ -14,7 +14,7 @@ IRMenu::IRMenu() {
 }
 
 void IRMenu::callSelectedFunction() {
-  if (selectedFunctionIndex == 0) { sendCustomCode(0x1FE50AF); }
+  if (selectedFunctionIndex == 0) { universalTVOff(); }
   else if (selectedFunctionIndex == 1) {}
   else if (selectedFunctionIndex == 2) {}
   else if (selectedFunctionIndex == 3) {}
