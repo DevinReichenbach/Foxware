@@ -8,6 +8,51 @@ void initializeIR() {
   pinMode(LED_PIN, OUTPUT);
 }
 
+void universalTVOff() {
+  File powerCodesCSV = SPIFFS.open("/power_codes.csv", "r"); // Open CSV with power codes
+
+  int target_row = 1;
+  String* cols = readCSVRow(powerCodesCSV, target_row); // Initial Read
+
+  while (cols[0] != "") {
+    cols = readCSVRow(powerCodesCSV, target_row);
+    // Send NEC Code if given
+    if (cols[3] == "NEC") {
+      uint8_t addr = convertStringToHex(cols[4]); 
+      uint8_t cmd = convertStringToHex(cols[5]);
+      
+      irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
+    }
+    target_row++;
+  }
+
+  powerCodesCSV.close();
+}
+
+uint8_t convertStringToHex(String entry) {
+  entry.trim();
+  uint8_t retEntry = (uint8_t)strtoul(entry.c_str(), NULL, 16);
+  return retEntry;
+}
+
+uint32_t convertCSVEntryToNEC(uint8_t address, uint8_t command) {
+  // Reverse bits for address and command
+  uint8_t revAddr = 0;
+  uint8_t revCmd = 0;
+  for (int i = 0; i < 8; i++) {
+    revAddr |= ((address >> i) & 1) << (7 - i);
+    revCmd |= ((command >> i) & 1) << (7 - i);
+  }
+
+  // Construct 32-bit NEC code: [revAddr][~revAddr][revCmd][~revCmd]
+  uint32_t necCode = ((uint32_t)revAddr << 24) |
+                     ((uint32_t)(~revAddr & 0xFF) << 16) |
+                     ((uint32_t)revCmd << 8) |
+                     (uint32_t)(~revCmd & 0xFF);
+
+  return necCode;
+}
+
 String* readCSVRow(File &csvFile, int targetRow) {
   static String columns[POWER_CODE_COLUMNS];
   // Make array empty
@@ -52,52 +97,4 @@ String* readCSVRow(File &csvFile, int targetRow) {
   }
 
   return columns;   // If row not found, return array with empty strings
-}
-
-uint8_t convertStringToHex(String entry) {
-  entry.trim();
-  uint8_t retEntry = (uint8_t)strtoul(entry.c_str(), NULL, 16);
-  return retEntry;
-}
-
-uint32_t convertCSVEntryToNEC(String address, String command) {
-  uint8_t addr = convertStringToHex(address);
-  uint8_t cmd = convertStringToHex(command);
-
-  // Reverse bits for address and command
-  uint8_t revAddr = 0;
-  uint8_t revCmd = 0;
-  for (int i = 0; i < 8; i++) {
-    revAddr |= ((addr >> i) & 1) << (7 - i);
-    revCmd |= ((cmd >> i) & 1) << (7 - i);
-  }
-
-  // Construct 32-bit NEC code: [revAddr][~revAddr][revCmd][~revCmd]
-  uint32_t necCode = ((uint32_t)revAddr << 24) |
-                     ((uint32_t)(~revAddr & 0xFF) << 16) |
-                     ((uint32_t)revCmd << 8) |
-                     (uint32_t)(~revCmd & 0xFF);
-
-  return necCode;
-}
-
-void universalTVOff() {
-  File powerCodesCSV = SPIFFS.open("/power_codes.csv", "r"); // Open CSV with power codes
-
-  int target_row = 1;
-  String* cols = readCSVRow(powerCodesCSV, target_row); // Initial Read
-
-  while (cols[0] != "") {
-    cols = readCSVRow(powerCodesCSV, target_row);
-    // Send NEC Code if given
-    if (cols[3] == "NEC") {
-      irsend.sendNEC(convertCSVEntryToNEC(cols[4], cols[5]), 32);
-    } else if (cols[3] == "NECext") {
-
-    }
-
-    target_row++;
-  }
-
-  powerCodesCSV.close();
 }
