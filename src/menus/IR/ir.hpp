@@ -14,7 +14,7 @@ const uint16_t NEC_CODES[NEC_CODES_LENGTH] = {10, 0, 31, 224, 149, 23, 15, 28, 8
 void initializeIR();
 void universalTVOff();
 
-uint8_t convertStringToHex(String entry);
+uint32_t convertStringToHex(String entry, int nBytes);
 uint32_t convertCSVEntryToNEC(uint8_t address, uint8_t command);
 
 String* readCSVRow(File &csvFile, int targetRow);

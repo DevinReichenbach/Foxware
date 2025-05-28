@@ -8,6 +8,9 @@ void initializeIR() {
   pinMode(LED_PIN, OUTPUT);
 }
 
+/**
+ * @brief 1st Main IR Function
+ */
 void universalTVOff() {
   File powerCodesCSV = SPIFFS.open("/power_codes.csv", "r"); // Open CSV with power codes
 
@@ -18,9 +21,9 @@ void universalTVOff() {
     cols = readCSVRow(powerCodesCSV, target_row);
     // Send NEC Code if given
     if (cols[3] == "NEC") {
-      uint8_t addr = convertStringToHex(cols[4]); 
-      uint8_t cmd = convertStringToHex(cols[5]);
-      
+      uint8_t addr = (uint8_t)convertStringToHex(cols[4], 1);
+      uint8_t cmd = (uint8_t)convertStringToHex(cols[5], 1);
+
       irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
     }
     target_row++;
@@ -29,12 +32,39 @@ void universalTVOff() {
   powerCodesCSV.close();
 }
 
-uint8_t convertStringToHex(String entry) {
+/**
+ * @brief convert hex string to int, typecast desired size based on nBytes parameter
+ * 
+ * @param entry Hex String
+ * @param nBytes The number of bytes to return and mask (0xFFFF)
+ * @return uint32_t by default, typecast to desired amount of nBytes given Ex. uint8_t --> nBytes = 1 or uint16_t --> nBytes = 2
+ */
+uint32_t convertStringToHex(String entry, int nBytes = 0) {
   entry.trim();
-  uint8_t retEntry = (uint8_t)strtoul(entry.c_str(), NULL, 16);
-  return retEntry;
+  entry.replace(" ", "");
+  uint32_t retEntry = (uint32_t)strtoul(entry.c_str(), NULL, 16);
+
+  uint8_t shift = 0; // Return entire Hex Val if nBytes not given
+  uint32_t mask = 0xFFFFFFFF;
+
+  if (nBytes == 1) {
+    shift = 24;
+    mask = 0xFF;
+  } else if (nBytes == 2) {
+    shift = 16;
+    mask = 0xFFFF;
+  }
+
+  return (retEntry >> shift) & mask;
 }
 
+/**
+ * @brief Reverse address and command then structure for NEC
+ * 
+ * @param address 
+ * @param command 
+ * @return uint32_t 
+ */
 uint32_t convertCSVEntryToNEC(uint8_t address, uint8_t command) {
   // Reverse bits for address and command
   uint8_t revAddr = 0;
@@ -52,7 +82,13 @@ uint32_t convertCSVEntryToNEC(uint8_t address, uint8_t command) {
 
   return necCode;
 }
-
+/**
+ * @brief Read CSV entry at a given starting row, assuming an entry is 6 rows long
+ * 
+ * @param csvFile 
+ * @param targetRow Row to start reading from 
+ * @return String* 
+ */
 String* readCSVRow(File &csvFile, int targetRow) {
   static String columns[POWER_CODE_COLUMNS];
   // Make array empty
