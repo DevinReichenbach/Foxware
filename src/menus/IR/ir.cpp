@@ -13,29 +13,33 @@ void initializeIR() {
  */
 void universalTVOff() {
   File powerCodesCSV = SPIFFS.open("/power_codes.csv", "r"); // Open CSV with power codes
+  String protocol, address, command;
 
   int target_row = 1;
   String* cols = readCSVRow(powerCodesCSV, target_row); // Initial Read
 
   while (cols[0] != "") {
     cols = readCSVRow(powerCodesCSV, target_row);
+
+    protocol = cols[3]; address = cols[4]; command = cols[5];
+
     // Send NEC Code if given
-    if (cols[3] == "NEC") {
-      uint8_t addr = (uint8_t)convertStringToHex(cols[4], 1);
-      uint8_t cmd = (uint8_t)convertStringToHex(cols[5], 1);
+    if (protocol == "NEC") {
+      uint8_t addr = (uint8_t)convertStringToHex(address, 1);
+      uint8_t cmd = (uint8_t)convertStringToHex(command, 1);
 
       irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
-    } else if (cols[3] == "NECext") {       
-      uint16_t addr = convertStringToHex(cols[4], 2);  // Extract first two bytes       
-      uint16_t cmd = convertStringToHex(cols[5], 2);
+    } else if (protocol == "NECext") {       
+      uint16_t addr = convertStringToHex(address, 2);  // Extract first two bytes       
+      uint16_t cmd = convertStringToHex(command, 2);
 
       irsend.sendNEC(convertCSVEntryToNECExt(addr, cmd), 32);
     }
     target_row++;
   }
-
   powerCodesCSV.close();
 }
+
 
 /**
  * @brief convert hex string to int, typecast desired size based on nBytes parameter
