@@ -25,6 +25,11 @@ void universalTVOff() {
       uint8_t cmd = (uint8_t)convertStringToHex(cols[5], 1);
 
       irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
+    }  else if (cols[3] == "NECext") {       
+      uint16_t addr = convertStringToHex(cols[4], 2);  // Extract first two bytes       
+      uint16_t cmd = convertStringToHex(cols[5], 2);
+
+      irsend.sendNEC(convertCSVEntryToNECExt(addr, cmd), 32);
     }
     target_row++;
   }
@@ -58,33 +63,57 @@ uint32_t convertStringToHex(String entry, int nBytes = 0) {
   return (retEntry >> shift) & mask;
 }
 
+uint32_t convertCSVEntryToNECExt(uint16_t address, uint8_t command) {
+  uint8_t revCmd = reverse8(command);
+  uint16_t revAddr = reverse16(address);
+
+  uint32_t necExtCode = ((uint32_t) revAddr << 16) |  // Reverse address store in top 2 bytes
+                         ((uint32_t)revCmd << 8) |    // Reverse cmd in 3rd byte
+                         (uint32_t)(~revCmd & 0xFF);  // Inverted cmd in last byte
+
+  return necExtCode;
+}
 /**
  * @brief Reverse address and command then structure for NEC
- * 
  * @param address 
  * @param command 
  * @return uint32_t 
  */
 uint32_t convertCSVEntryToNEC(uint8_t address, uint8_t command) {
-  // Reverse bits for address and command
-  uint8_t revAddr = 0;
-  uint8_t revCmd = 0;
-  for (int i = 0; i < 8; i++) {
-    revAddr |= ((address >> i) & 1) << (7 - i);
-    revCmd |= ((command >> i) & 1) << (7 - i);
-  }
+  uint8_t revAddr = reverse8(address);
+  uint8_t revCmd = reverse8(command);
 
-  // Construct 32-bit NEC code: [revAddr][~revAddr][revCmd][~revCmd]
-  uint32_t necCode = ((uint32_t)revAddr << 24) |
-                     ((uint32_t)(~revAddr & 0xFF) << 16) |
-                     ((uint32_t)revCmd << 8) |
-                     (uint32_t)(~revCmd & 0xFF);
+  uint32_t necCode = ((uint32_t)revAddr << 24) |                // Put 8-bit reversed address in 1st byte
+                     ((uint32_t)(~revAddr & 0xFF) << 16) |      // Put 8-bit inverted reversed address in 2nd byte
+                     ((uint32_t)revCmd << 8) |                  // 8-bit reversed command in 3rd byte
+                     (uint32_t)(~revCmd & 0xFF);                // 8-bit inverted reversed command in 4th byte
 
   return necCode;
 }
+
+/**
+ * @brief Reverse byte
+ * @param byte 
+ * @return uint8_t 
+ */
+uint8_t reverse8(uint8_t byte) {
+  byte = (byte & 0xF0) >> 4 | (byte & 0x0F) << 4;
+  byte = (byte & 0xCC) >> 2 | (byte & 0x33) << 2;
+  byte = (byte & 0xAA) >> 1 | (byte & 0x55) << 1;
+  return byte;
+}
+
+/**
+ * @brief Reverse 16-bit word
+ * @param word 
+ * @return uint16_t 
+ */
+uint16_t reverse16(uint16_t word) {
+  return (uint16_t)(reverse8(word & 0xFF) << 8) | reverse8(word >> 8);
+}
+
 /**
  * @brief Read CSV entry at a given starting row, assuming an entry is 6 rows long
- * 
  * @param csvFile 
  * @param targetRow Row to start reading from 
  * @return String* 

@@ -15,6 +15,11 @@ void initializeIR();
 void universalTVOff();
 
 uint32_t convertStringToHex(String entry, int nBytes);
+
 uint32_t convertCSVEntryToNEC(uint8_t address, uint8_t command);
+uint32_t convertCSVEntryToNECExt(uint16_t address, uint8_t command);
+
+uint8_t reverse8(uint8_t byte);
+uint16_t reverse16(uint16_t word);
 
 String* readCSVRow(File &csvFile, int targetRow);
