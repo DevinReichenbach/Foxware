@@ -25,7 +25,7 @@ void universalTVOff() {
       uint8_t cmd = (uint8_t)convertStringToHex(cols[5], 1);
 
       irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
-    }  else if (cols[3] == "NECext") {       
+    } else if (cols[3] == "NECext") {       
       uint16_t addr = convertStringToHex(cols[4], 2);  // Extract first two bytes       
       uint16_t cmd = convertStringToHex(cols[5], 2);
 
@@ -63,6 +63,12 @@ uint32_t convertStringToHex(String entry, int nBytes = 0) {
   return (retEntry >> shift) & mask;
 }
 
+/**
+ * @brief Structure address and command for NECext protocol
+ * @param address 
+ * @param command 
+ * @return uint32_t 
+ */
 uint32_t convertCSVEntryToNECExt(uint16_t address, uint8_t command) {
   uint8_t revCmd = reverse8(command);
   uint16_t revAddr = reverse16(address);
