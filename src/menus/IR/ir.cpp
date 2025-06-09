@@ -28,12 +28,18 @@ void universalTVOff() {
       uint8_t addr = (uint8_t)convertStringToHex(address, 1);
       uint8_t cmd = (uint8_t)convertStringToHex(command, 1);
 
-      irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
+      //irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
     } else if (protocol == "NECext") {       
       uint16_t addr = convertStringToHex(address, 2);  // Extract first two bytes       
       uint16_t cmd = convertStringToHex(command, 2);
 
-      irsend.sendNEC(convertCSVEntryToNECExt(addr, cmd), 32);
+      //irsend.sendNEC(convertCSVEntryToNECExt(addr, cmd), 32);
+    } else if (protocol == "Samsung32") {
+      uint16_t addr = convertStringToHex(address, 1);
+      uint16_t cmd = convertStringToHex(command, 1);
+      
+      uint32_t samsungCode = irsend.encodeSAMSUNG(addr, cmd);
+      irsend.sendSAMSUNG(samsungCode);
     }
     target_row++;
   }
