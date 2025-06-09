@@ -28,19 +28,38 @@ void universalTVOff() {
       uint8_t addr = (uint8_t)convertStringToHex(address, 1);
       uint8_t cmd = (uint8_t)convertStringToHex(command, 1);
 
-      //irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
+      irsend.sendNEC(convertCSVEntryToNEC(addr, cmd), 32);
     } else if (protocol == "NECext") {       
       uint16_t addr = convertStringToHex(address, 2);  // Extract first two bytes       
       uint16_t cmd = convertStringToHex(command, 2);
 
-      //irsend.sendNEC(convertCSVEntryToNECExt(addr, cmd), 32);
+      irsend.sendNEC(convertCSVEntryToNECExt(addr, cmd), 32);
     } else if (protocol == "Samsung32") {
-      uint16_t addr = convertStringToHex(address, 1);
-      uint16_t cmd = convertStringToHex(command, 1);
-      
+      uint8_t addr = convertStringToHex(address, 1);
+      uint8_t cmd = convertStringToHex(command, 1);
+
       uint32_t samsungCode = irsend.encodeSAMSUNG(addr, cmd);
       irsend.sendSAMSUNG(samsungCode);
+    } else if (protocol == "SIRC") {
+      uint16_t addr = convertStringToHex(address, 2);
+      uint16_t cmd = convertStringToHex(command, 2);
+      
+      uint32_t sonyCode = irsend.encodeSony(32, cmd, addr);
+      irsend.sendSony(sonyCode);
+    } else if (protocol == "RC5") {
+      uint8_t addr = convertStringToHex(address, 1);
+      uint8_t cmd = convertStringToHex(command, 1);
+
+      uint16_t RC5Code = irsend.encodeRC5(addr, cmd);
+      irsend.sendRC5(RC5Code);
+    } else if (protocol == "RC6") {
+      uint16_t addr = convertStringToHex(address, 2);
+      uint8_t cmd = convertStringToHex(command, 1);
+
+      uint32_t RC6Code = irsend.encodeRC6(addr, cmd);
+      irsend.sendRC6(RC6Code);
     }
+
     target_row++;
   }
   powerCodesCSV.close();
