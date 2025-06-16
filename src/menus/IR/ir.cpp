@@ -58,6 +58,13 @@ void universalTVOff() {
 
       uint32_t RC6Code = irsend.encodeRC6(addr, cmd);
       irsend.sendRC6(RC6Code);
+    } else if (protocol == "Pioneer") {
+      uint8_t addr = (uint8_t)convertStringToHex(address, 1);
+      uint8_t cmd = (uint8_t)convertStringToHex(command, 1);
+      uint16_t combined_addr_cmd = (addr << 8) + cmd;
+      
+      uint64_t PioneerCode = irsend.encodePioneer(combined_addr_cmd, combined_addr_cmd);
+      irsend.sendPioneer(PioneerCode);
     }
 
     target_row++;
