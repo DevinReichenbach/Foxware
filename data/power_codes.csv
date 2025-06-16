@@ -39,7 +39,7 @@ Medion,Power,parsed,NEC,19 00 00 00,18 00 00 00
 Mivar,Power,parsed,NECext,00 FB 00 00,0A F5 00 00
 NEC,Power,parsed,NEC,38 00 00 00,01 00 00 00
 Multiple,Power,parsed,NECext,EA C7 00 00,17 E8 00 00
-Panasonic,Power,parsed,Kaseikyo,80 02 20 00,D0 03 00 00
+Panasonic,Power,parsed,Panasonic,40 04 00 00,01 00 BC BD
 Panasonic,Power,parsed,Samsung32,3E 00 00 00,0C 00 00 00
 Philips,Power,parsed,NECext,00 BD 00 00,01 FE 00 00
 Philips,Power,parsed,RC6,00 00 00 00,0C 00 00 00

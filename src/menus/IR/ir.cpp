@@ -65,6 +65,11 @@ void universalTVOff() {
       
       uint64_t PioneerCode = irsend.encodePioneer(combined_addr_cmd, combined_addr_cmd);
       irsend.sendPioneer(PioneerCode);
+    } else if (protocol == "Panasonic") {
+      uint16_t addr = (uint16_t)convertStringToHex(address, 2);
+      uint32_t cmd = (uint32_t)convertStringToHex(command, 4);
+
+      irsend.sendPanasonic(addr, cmd); // Depreciated but idc 
     }
 
     target_row++;
