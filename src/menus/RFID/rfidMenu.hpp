@@ -3,6 +3,7 @@
 
 #include <M5StickCPlus2.h>
 #include "menus/Submenu.hpp"
+#include "menus/RFID/rfid.hpp"
 
 class RFIDMenu : public Submenu {
   private:
